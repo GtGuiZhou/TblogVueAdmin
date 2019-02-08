@@ -1,0 +1,8 @@
+{
+  "imageUrl": "/api/upload/image",
+  "imagePath": "/ueditor/php/",
+  "imageFieldName": "upfile",
+  "imageMaxSize": 2048,
+  "imageAllowFiles": [".png", ".jpg", ".jpeg", ".gif", ".bmp"]
+}
+
