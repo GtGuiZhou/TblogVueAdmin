@@ -6,7 +6,8 @@ export default [
     icon: 'folder-o',
     children: [
       { path: '/article/list', title: '列表' },
-      { path: '/article/add', title: '添加' }
+      { path: '/article/add', title: '添加' },
+      { path: '/article/recover', title: '回收站' }
     ]
   },
   {

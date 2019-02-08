@@ -47,9 +47,10 @@
                 </div>
             </el-form-item>
 
+
             <el-form-item>
                 <div style="text-align: left">
-                    <el-button type="primary" @click="add()">添加文章</el-button>
+                    <el-button type="primary" @click="update()">更新文章</el-button>
                     <el-button type="danger" @click="$refs.form.resetFields()">清空</el-button>
                 </div>
             </el-form-item>
@@ -58,18 +59,17 @@
 </template>
 
 <script>
-  import { quillEditor } from "vue-quill-editor"; //调用编辑器
   import 'quill/dist/quill.core.css';
   import 'quill/dist/quill.snow.css';
   import 'quill/dist/quill.bubble.css';
-  import { ArticleAdd } from '../../api/page.article'
+  import { quillEditor } from 'vue-quill-editor' //调用编辑器
+  import { ArticleRead, ArticleUpdate } from '../../api/page.article'
 
   export default {
     name: 'add',
     components: {
       quillEditor
     },
-
     data () {
       return {
         form: {
@@ -77,21 +77,28 @@
           cover: '',
           content: ''
         },
-        editorOption: {},
+        editorOption:{},
         imageLoading: false
       }
     },
+    created(){
+      ArticleRead(this.$route.params.id).then(
+        res => {
+          this.form = res
+        }
+      )
+    },
     methods: {
-      add () {
-        ArticleAdd(this.form).then(
-          res => {
-            this.jumpConfirm(res.id)
+      update () {
+        ArticleUpdate(this.$route.params.id,this.form).then(
+          () => {
+            this.jumpConfirm(this.$route.params.id)
           }
         )
       },
 
       jumpConfirm(id){
-        this.$confirm('上传成功', '提示', {
+        this.$confirm('更新成功', '提示', {
           confirmButtonText: '跳转查看',
           cancelButtonText: '取消',
           type: 'success'
@@ -117,7 +124,7 @@
   }
 </script>
 
-<style>
+<style >
     .Cover-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;

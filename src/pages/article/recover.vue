@@ -1,14 +1,14 @@
 <template>
-    <d2-container @scroll="({x, y}) => { scrollTop = y }">
+    <d2-container>
         <template slot="header">
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item :to="{ path: '/article' }">文章</el-breadcrumb-item>
-                <el-breadcrumb-item>列表</el-breadcrumb-item>
+                <el-breadcrumb-item>回收站</el-breadcrumb-item>
             </el-breadcrumb>
         </template>
         <el-pagination-plus
                 :page="page"
-                @refresh="loadItems"
+                @refresh="onRefresh"
                 @change="pageChange"
         ></el-pagination-plus>
         <br>
@@ -28,15 +28,16 @@
                         <gray-small>创建时间{{item.create_time}}</gray-small>
                         <br>
                         <gray-small>更新时间{{item.update_time}}</gray-small>
+                        <br>
+                        <gray-small>删除时间{{item.delete_time}}</gray-small>
                     </div>
                     <div>
                         <el-tag type="warning">
                             <i class="el-icon-star-on"></i>
                             {{item.star_num}}个赞</el-tag>
                         &nbsp;
-                        <el-button type="info" @click="$router.push('/article/update/' + item.id)">编辑</el-button>
-                        <el-button type="success" @click="$router.push('/article/view/' + item.id)">查看</el-button>
-                        <el-button type="danger" @click="deleteItem(item,key)">删除</el-button>
+                        <el-button type="success" @click="recover(item,key)">恢复</el-button>
+                        <el-button type="danger" @click="realDelete(item,key)">从回收站移除</el-button>
                     </div>
                 </div>
             </el-card>
@@ -46,17 +47,16 @@
 </template>
 
 <script>
-  import { ArticleDelete, ArticleIndex } from '../../api/page.article'
+  import { ArticleIndexOfTrashed, ArticleRealDelete, ArticleRecover } from '../../api/page.article'
   import ElPaginationPlus from '../../components/el-pagination-plus/index'
   import GraySmall from '../../components/gray-small/index'
+
   export default {
     name: 'Index',
     components: { GraySmall, ElPaginationPlus },
     data () {
       return {
-        loading: false,
         items: [],
-        scrollTop: 0,
         page: {
           index: 1,
           total: 0,
@@ -65,14 +65,31 @@
       }
     },
     created () {
-        this.loadItems()
+      this.loadItems()
     },
     methods: {
-      deleteItem(item,index){
-        ArticleDelete(item.id).then(
+      onRefresh(){
+        this.loadItems()
+      },
+      realDelete(item,index){
+          this.$confirm('移除后就再也无法恢复了哦', '警告', {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'danger'
+          }).then(() => {
+            ArticleRealDelete(item.id).then(
+              () => {
+                this.items.splice(index,1)
+                this.successNotify('移除'+item.title+'成功')
+              }
+            )
+          })
+      },
+      recover(item,index){
+        ArticleRecover(item.id).then(
           () => {
+            this.successNotify('恢复'+item.title+'成功')
             this.items.splice(index,1)
-            this.successNotify('删除'+item.title+'成功,您可以在回收站看到')
           }
         )
       },
@@ -83,7 +100,7 @@
         this.loadItems()
       },
       loadItems () {
-        ArticleIndex(this.page).then(
+        ArticleIndexOfTrashed(this.page).then(
           res => {
             this.items =  res.list
             this.page  =  res.page

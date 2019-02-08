@@ -1,5 +1,13 @@
-[![Build Status](https://www.travis-ci.org/d2-projects/d2-admin-start-kit.svg?branch=master)](https://www.travis-ci.org/d2-projects/d2-admin-start-kit)
+#基于D2Admin开发的博客admin前端
+## 2019年02月08日09:55:36
+今天本来要加上滑列表自动加载功能的，但是遇到各种坑
+1.d2admin的container组件的scroll事件不会返回任何东西。
+2.batter-scroll滚动条组件文档太简单，需要花费时间研究，不是很值得。
+3.下次可以试试用iscroll来做看看
+最后，用分页先代替这个功能
+## 富文本编辑器
+暂时使用vue-quill-editor,他的图片插入是将图片转换为base64进行上传
+后期需要改为ueditor来进行改进
 
-[D2Admin](https://github.com/d2-projects/d2-admin) 简化版起始模板，删除所有完整版中的示例代码，保留所有核心功能。
-
-[码云镜像](https://gitee.com/fairyever/d2-admin-start-kit)
+## 2019年02月09日00:23:04
+使用vue-quill-editor，如果没有导入css文件会导致编辑器的图标变得异常大
