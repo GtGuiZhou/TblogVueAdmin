@@ -64,3 +64,10 @@ export function ArticleRead (id) {
     method: 'get',
   })
 }
+
+export function ArticleGroupTree() {
+  return request({
+    url: '/article/groupTree',
+    method: 'get',
+  })
+}

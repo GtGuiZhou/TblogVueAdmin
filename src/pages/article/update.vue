@@ -34,6 +34,19 @@
             </el-form-item>
 
             <el-form-item
+                    prop="group_id"
+                    label="分组"
+            >
+                    <el-tree-plus
+                            :edit="true"
+                            @node-click="handleNodeClick"
+                            @node-change="handleNodeChange"
+                            style="max-width: 300px;border: 1px dashed #d9d9d9;padding: 5px"
+                            :data="tree"
+                    ></el-tree-plus>
+            </el-form-item>
+
+            <el-form-item
                     prop="content"
                     label="内容">
                 <!--style="line-height: normal"-->
@@ -63,11 +76,13 @@
   import 'quill/dist/quill.snow.css';
   import 'quill/dist/quill.bubble.css';
   import { quillEditor } from 'vue-quill-editor' //调用编辑器
-  import { ArticleRead, ArticleUpdate } from '../../api/page.article'
+  import { ArticleGroupTree, ArticleRead, ArticleUpdate } from '../../api/page.article'
+  import ElTreePlus from '../../components/el-tree-plus/index'
 
   export default {
     name: 'add',
     components: {
+      ElTreePlus,
       quillEditor
     },
     data () {
@@ -77,6 +92,10 @@
           cover: '',
           content: ''
         },
+        tree:[
+            {"path": '电脑/' ,'label':'电脑','children': [{path:'电脑/技巧/','label':'技巧','children':[]}]},
+            {"path": '生活/' ,'label':'生活','children': [{path:'生活/技巧/','label':'技巧','children':[]}]},
+        ],
         editorOption:{},
         imageLoading: false
       }
@@ -87,8 +106,22 @@
           this.form = res
         }
       )
+
+      ArticleGroupTree().then(
+        res => {
+          // this.tree = res
+        }
+      )
     },
     methods: {
+      handleNodeChange(node){
+        console.log(node)
+      },
+
+      handleNodeClick (data,node,_this) {
+        console.log(data)
+      },
+
       update () {
         ArticleUpdate(this.$route.params.id,this.form).then(
           () => {
