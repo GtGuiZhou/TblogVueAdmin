@@ -10,7 +10,10 @@
                 class="custom-tree-container"
                 :props="props"
                 :data="data"
-                node-key="path">
+                node-key="path"
+                @node-drop="handleDrop"
+                draggable
+        >
       <span class="custom-tree-node"  slot-scope="{ node, data }" >
         <span>{{node.label}}</span>
         <span v-if="edit">
@@ -60,11 +63,31 @@
       }
     },
     methods: {
-      getNode(){
+      handleDrop () {
+        this.$emit('node-change',this.getNodeGroup())
+      },
+
+      getNodeGroup(){
         let nodes = this.$refs.treeplus.root.childNodes
         let simpNodes = []
         nodes.forEach(node => {
           simpNodes.push(JSON.parse(JSON.stringify(node.data)))
+        })
+
+        // 对path进行重构，处理树型节点拖拽行为
+        let restPath = (node,path) => {
+          path = path + node[this.props.label] + '/'
+          node.path = path
+          // 相当于node.children.length，因为children可变
+          let children = node[this.props.children]
+          if (children.length > 0){
+            children.forEach(item => {
+              restPath(item,path)
+            })
+          }
+        }
+        simpNodes.forEach(node => {
+          restPath(node,path)
         })
         return simpNodes
       },
@@ -100,7 +123,7 @@
           let path = data.path + value + '/'
           const newChild = { path: path, label: value, children: [] }
           data.children.push(newChild)
-          this.$emit('node-change',this.getNode())
+          this.$emit('node-change',this.getNodeGroup())
         })
       },
 
@@ -109,7 +132,7 @@
         const children = parent.data.children || parent.data
         const index = children.findIndex(d => d.id === data.id)
         children.splice(index, 1)
-        this.$emit('node-change',this.getNode())
+        this.$emit('node-change',this.getNodeGroup())
       }
     }
   }
