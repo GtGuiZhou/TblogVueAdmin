@@ -116,3 +116,16 @@
         return simpNodes
       },
 ~~~
+
+## vue的watch函数新写法
+~~~
+// 新写法
+filterText(val) {
+        this.$refs.treeplus.filter(val);
+      }
+
+// 老写法
+filterText(newVal,oldVal) {
+        this.$refs.treeplus.filter(newVal);
+      }      
+~~~
