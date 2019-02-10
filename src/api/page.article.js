@@ -65,9 +65,19 @@ export function ArticleRead (id) {
   })
 }
 
-export function ArticleGroupTree() {
+export function ArticleGetGroupTree() {
   return request({
-    url: '/article/groupTree',
+    url: '/article/getGroupTree',
     method: 'get',
+  })
+}
+
+export function ArticleUpdateGroupTree (tree) {
+  return request({
+    url: '/article/updateGroupTree',
+    method: 'put',
+    data: {
+      tree
+    }
   })
 }

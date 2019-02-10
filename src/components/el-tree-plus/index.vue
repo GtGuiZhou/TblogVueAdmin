@@ -1,6 +1,16 @@
 <template>
     <div>
-        <el-input v-model="filterText" placeholder="搜索节点"></el-input>
+        <el-select v-model="selectPath" filterable placeholder="请选择">
+            <el-option
+                    filterable
+                    allow-create
+                    v-for="item in pathOptions"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+        </el-select>
+
         <el-tree
                 ref="treeplus"
                 :filter-node-method="filterNode"
@@ -23,7 +33,6 @@
         </span>
       </span>
         </el-tree>
-        <div>{{currentPath}}</div>
     </div>
 
 </template>
@@ -54,42 +63,62 @@
     data () {
       return {
         currentPath: '',
-        filterText: ''
+        selectPath: '',
+        pathOptions: []
       }
     },
     watch: {
-      filterText(val) {
-        this.$refs.treeplus.filter(val);
+      data (val) {
+        this.buildPathOptions()
       }
     },
     methods: {
       handleDrop () {
-        this.$emit('node-change',this.getNodeGroup())
+        this.nodeChange()
       },
 
-      getNodeGroup(){
-        let nodes = this.$refs.treeplus.root.childNodes
-        let simpNodes = []
-        nodes.forEach(node => {
-          simpNodes.push(JSON.parse(JSON.stringify(node.data)))
-        })
+      buildPathOptions(){
+        let options = []
 
-        // 对path进行重构，处理树型节点拖拽行为
-        let restPath = (node,path) => {
-          path = path + node[this.props.label] + '/'
-          node.path = path
-          // 相当于node.children.length，因为children可变
-          let children = node[this.props.children]
-          if (children.length > 0){
-            children.forEach(item => {
-              restPath(item,path)
+        let dp = nodes => {
+            nodes.forEach(item => {
+              options.push({value: item.path, label: item.path})
+              if (this.props.children in item){
+                dp(item.children)
+              }
             })
-          }
         }
-        simpNodes.forEach(node => {
-          restPath(node,path)
-        })
-        return simpNodes
+
+        console.log(this.getNodeGroup())
+        dp(this.getNodeGroup())
+
+        this.pathOptions = options
+
+      },
+
+      // 获取当前节点（被用户更改后的节点与data不一致）
+      getNodeGroup(){
+        if (this.$refs.treeplus.root === undefined)
+          return []
+        let nodes = this.$refs.treeplus.root.data
+        // nodes  = JSON.parse(JSON.stringify(nodes))
+        // 对path进行重构，处理树型节点拖拽行为
+        let dp = (nodes,lastPath,propsLabel,propsChildren) => {
+            nodes.forEach(node => {
+              let path = lastPath + node[propsLabel] + '/'
+              node.path = path
+              console.log(node)
+              // 相当于node.children.length，因为children可变
+              let children = node[propsChildren]
+              if (children.length > 0){
+                dp(children,path,propsLabel,propsChildren)
+              }
+            })
+        }
+
+          dp(nodes, '',this.props.label,this.props.children)
+        // 更新当前
+        return nodes
       },
       filterNode(value,data){
         if (!value) return true;
@@ -123,7 +152,7 @@
           let path = data.path + value + '/'
           const newChild = { path: path, label: value, children: [] }
           data.children.push(newChild)
-          this.$emit('node-change',this.getNodeGroup())
+          this.nodeChange()
         })
       },
 
@@ -132,6 +161,11 @@
         const children = parent.data.children || parent.data
         const index = children.findIndex(d => d.id === data.id)
         children.splice(index, 1)
+        this.nodeChange()
+      },
+
+      nodeChange() {
+        this.buildPathOptions()
         this.$emit('node-change',this.getNodeGroup())
       }
     }

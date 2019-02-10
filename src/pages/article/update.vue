@@ -72,11 +72,17 @@
 </template>
 
 <script>
-  import 'quill/dist/quill.core.css';
-  import 'quill/dist/quill.snow.css';
-  import 'quill/dist/quill.bubble.css';
+  import 'quill/dist/quill.core.css'
+  import 'quill/dist/quill.snow.css'
+  import 'quill/dist/quill.bubble.css'
   import { quillEditor } from 'vue-quill-editor' //调用编辑器
-  import { ArticleGroupTree, ArticleRead, ArticleUpdate } from '../../api/page.article'
+  import {
+    ArticleGetGroupTree,
+    ArticleGroupTree,
+    ArticleGroupTreeUpdate,
+    ArticleRead,
+    ArticleUpdate, ArticleUpdateGroupTree
+  } from '../../api/page.article'
   import ElTreePlus from '../../components/el-tree-plus/index'
 
   export default {
@@ -107,15 +113,19 @@
         }
       )
 
-      ArticleGroupTree().then(
+      ArticleGetGroupTree().then(
         res => {
-          // this.tree = res
+          this.tree = res
         }
       )
     },
     methods: {
-      handleNodeChange(node){
-        console.log(node)
+      handleNodeChange(tree){
+        ArticleUpdateGroupTree(tree).then(
+          () => {
+            this.successNotify('目录更新成功')
+          }
+        )
       },
 
       handleNodeClick (data,node,_this) {
