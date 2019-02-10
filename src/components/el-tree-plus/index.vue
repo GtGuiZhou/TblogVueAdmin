@@ -1,9 +1,10 @@
 <template>
     <div>
-        <el-select v-model="selectPath" filterable placeholder="请选择">
+        <el-select
+                filterable
+                :value="selectPath"
+                @change="selectPathChange" filterable placeholder="请选择" style="width: 100%;margin: 5px 0">
             <el-option
-                    filterable
-                    allow-create
                     v-for="item in pathOptions"
                     :key="item.value"
                     :label="item.label"
@@ -41,6 +42,10 @@
 
   export default {
     name: 'ElTreePlus',
+    model: {
+      prop: 'selectPath',
+      event: 'change'
+    },
     props: {
       edit:{
         type: Boolean,
@@ -58,12 +63,14 @@
             label: 'label'
           }
         }
+      },
+      selectPath: {
+        type: String
       }
     },
     data () {
       return {
         currentPath: '',
-        selectPath: '',
         pathOptions: []
       }
     },
@@ -73,6 +80,10 @@
       }
     },
     methods: {
+      selectPathChange(val){
+        console.log(val)
+        this.$emit('change',val)
+      },
       handleDrop () {
         this.nodeChange()
       },

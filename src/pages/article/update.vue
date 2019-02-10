@@ -34,14 +34,15 @@
             </el-form-item>
 
             <el-form-item
-                    prop="group_id"
+                    prop="group_path"
                     label="分组"
             >
                     <el-tree-plus
+                            v-model="form.group_path"
                             :edit="true"
                             @node-click="handleNodeClick"
                             @node-change="handleNodeChange"
-                            style="max-width: 300px;border: 1px dashed #d9d9d9;padding: 5px"
+                            style="max-width: 300px;border: 1px solid #d9d9d9;padding: 5px"
                             :data="tree"
                     ></el-tree-plus>
             </el-form-item>
@@ -78,10 +79,9 @@
   import { quillEditor } from 'vue-quill-editor' //调用编辑器
   import {
     ArticleGetGroupTree,
-    ArticleGroupTree,
-    ArticleGroupTreeUpdate,
     ArticleRead,
-    ArticleUpdate, ArticleUpdateGroupTree
+    ArticleUpdate,
+    ArticleUpdateGroupTree
   } from '../../api/page.article'
   import ElTreePlus from '../../components/el-tree-plus/index'
 
@@ -96,7 +96,8 @@
         form: {
           title: '',
           cover: '',
-          content: ''
+          content: '',
+          group_path: ''
         },
         tree:[
             {"path": '电脑/' ,'label':'电脑','children': [{path:'电脑/技巧/','label':'技巧','children':[]}]},

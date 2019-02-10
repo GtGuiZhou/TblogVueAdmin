@@ -129,3 +129,10 @@ filterText(newVal,oldVal) {
         this.$refs.treeplus.filter(newVal);
       }      
 ~~~
+## 非常喜欢用的两种边框样式
+~~~
+1px solid #d9d9d9 or 1px solid #d9d9d9
+border: 1px dashed #d9d9d9;
+border-radius: 6px;
+cursor: pointer;``
+~~~
