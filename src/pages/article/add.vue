@@ -34,6 +34,19 @@
             </el-form-item>
 
             <el-form-item
+                    prop="group_path"
+                    label="分组"
+            >
+                <el-tree-plus
+                        v-model="form.group_path"
+                        :edit="true"
+                        @node-change="handleNodeChange"
+                        style="max-width: 300px;border: 1px solid #d9d9d9;padding: 5px"
+                        :data="tree"
+                ></el-tree-plus>
+            </el-form-item>
+
+            <el-form-item
                     prop="content"
                     label="内容">
                 <!--style="line-height: normal"-->
@@ -62,11 +75,13 @@
   import 'quill/dist/quill.core.css';
   import 'quill/dist/quill.snow.css';
   import 'quill/dist/quill.bubble.css';
-  import { ArticleAdd } from '../../api/page.article'
+  import { ArticleAdd, ArticleGetGroupTree, ArticleUpdateGroupTree } from '../../api/page.article'
+  import ElTreePlus from '../../components/el-tree-plus/index'
 
   export default {
     name: 'add',
     components: {
+      ElTreePlus,
       quillEditor
     },
 
@@ -75,17 +90,37 @@
         form: {
           title: '',
           cover: '',
-          content: ''
+          content: '',
+          group_path: ''
         },
+        tree:[
+          {"path": '电脑/' ,'label':'电脑','children': [{path:'电脑/技巧/','label':'技巧','children':[]}]},
+          {"path": '生活/' ,'label':'生活','children': [{path:'生活/技巧/','label':'技巧','children':[]}]},
+        ],
         editorOption: {},
         imageLoading: false
       }
+    },
+    created(){
+      ArticleGetGroupTree().then(
+        res => {
+          this.tree = res
+        }
+      )
     },
     methods: {
       add () {
         ArticleAdd(this.form).then(
           res => {
             this.jumpConfirm(res.id)
+          }
+        )
+      },
+
+      handleNodeChange(tree){
+        ArticleUpdateGroupTree(tree).then(
+          () => {
+            this.successNotify('目录更新成功')
           }
         )
       },

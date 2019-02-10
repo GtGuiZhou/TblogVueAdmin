@@ -40,7 +40,6 @@
                     <el-tree-plus
                             v-model="form.group_path"
                             :edit="true"
-                            @node-click="handleNodeClick"
                             @node-change="handleNodeChange"
                             style="max-width: 300px;border: 1px solid #d9d9d9;padding: 5px"
                             :data="tree"
@@ -127,10 +126,6 @@
             this.successNotify('目录更新成功')
           }
         )
-      },
-
-      handleNodeClick (data,node,_this) {
-        console.log(data)
       },
 
       update () {

@@ -71,7 +71,6 @@
     },
     data () {
       return {
-        currentPath: '',
         pathOptions: []
       }
     },
@@ -137,7 +136,7 @@
         return data.label.indexOf(value) !== -1;
       },
       handleNodeClick (data,node,_this) {
-        this.currentPath = data.path
+        this.selectPathChange(data.path)
         this.$emit('node-click',data,node,_this)
       },
       append (data) {
