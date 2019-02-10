@@ -137,7 +137,7 @@ border-radius: 6px;
 cursor: pointer;``
 ~~~
 
-## 在组件中如何转发子组件的v-model
+## 如何自定义v-model,在组件中如何转发子组件的v-model
 ~~~
 // 查阅vue的官方文档，发现v-model其实是语法糖，有如下例子
  <el-select
