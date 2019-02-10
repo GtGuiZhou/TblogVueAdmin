@@ -29,6 +29,8 @@
       <span class="custom-tree-node"  slot-scope="{ node, data }" >
         <span>{{node.label}}</span>
         <span v-if="edit">
+            <i class="el-icon-edit" @click="() => update(data)"></i>
+          &nbsp;&nbsp;
             <i class="el-icon-plus" @click="() => append(data)"></i>
             &nbsp;&nbsp;
             <i class="el-icon-close" @click="() => remove(node,data)"></i>
@@ -81,7 +83,6 @@
     },
     methods: {
       selectPathChange(val){
-        console.log(val)
         this.$emit('change',val)
       },
       handleDrop () {
@@ -100,7 +101,6 @@
             })
         }
 
-        console.log(this.getNodeGroup())
         dp(this.getNodeGroup())
 
         this.pathOptions = options
@@ -118,7 +118,6 @@
             nodes.forEach(node => {
               let path = lastPath + node[propsLabel] + '/'
               node.path = path
-              console.log(node)
               // 相当于node.children.length，因为children可变
               let children = node[propsChildren]
               if (children.length > 0){
@@ -169,10 +168,39 @@
 
       remove (node, data) {
         const parent = node.parent
+        console.log(node)
         const children = parent.data.children || parent.data
         const index = children.findIndex(d => d.id === data.id)
+        if (children.length === 1 && parent.parent === null) {
+          this.$message({
+            type:'error',
+            message: '必须存在一个节点',
+            center: true
+          });
+          return
+        }
         children.splice(index, 1)
         this.nodeChange()
+      },
+
+      update(data){
+        this.$prompt('请输入节点名称', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValidator: val => {
+            if (val.length < 1)
+              return '节点名称不能为空'
+            // 检测子节点是否存在该名称
+            let path = data.path + val + '/'
+            if (data.children.findIndex(node => {
+              return node.path === path}) >= 0) {
+              return '该节点名称已存在'
+            }
+            return true
+          }
+        }).then(({ value }) => {
+          data.label = value
+        })
       },
 
       nodeChange() {

@@ -98,10 +98,7 @@
           content: '',
           group_path: ''
         },
-        tree:[
-            {"path": '电脑/' ,'label':'电脑','children': [{path:'电脑/技巧/','label':'技巧','children':[]}]},
-            {"path": '生活/' ,'label':'生活','children': [{path:'生活/技巧/','label':'技巧','children':[]}]},
-        ],
+        tree:[],
         editorOption:{},
         imageLoading: false
       }
