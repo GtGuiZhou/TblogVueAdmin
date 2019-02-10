@@ -136,3 +136,35 @@ border: 1px dashed #d9d9d9;
 border-radius: 6px;
 cursor: pointer;``
 ~~~
+
+## 在组件中如何转发子组件的v-model
+~~~
+// 查阅vue的官方文档，发现v-model其实是语法糖，有如下例子
+ <el-select
+         filterable
+         // 可以把v-model拆解为如下两个部分
+         :value="selectPath" // value是子组件定义的props，我这里是翻阅了element的select源码发现是input的   
+         @change="selectPathChange" // change是子组件定义的事件，我这里是翻阅了element的select源码发现是change的
+         >
+</el-select> 
+
+// 下面的代码是创造v-model的代码
+<script>
+    {
+        model: {
+              prop: 'selectPath',
+              event: 'change'
+            },
+        props: {
+          selectPath: {
+            type: String
+          }
+        }, 
+       methods: {
+          selectPathChange(val){
+            console.log(val)
+            this.$emit('change',val)
+          },   
+    }
+<script>
+~~~

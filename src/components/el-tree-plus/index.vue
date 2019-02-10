@@ -3,7 +3,8 @@
         <el-select
                 filterable
                 :value="selectPath"
-                @change="selectPathChange" filterable placeholder="请选择" style="width: 100%;margin: 5px 0">
+                @change="selectPathChange"
+                filterable placeholder="请选择" style="width: 100%;margin: 5px 0">
             <el-option
                     v-for="item in pathOptions"
                     :key="item.value"
