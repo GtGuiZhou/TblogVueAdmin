@@ -29,7 +29,7 @@
       <span class="custom-tree-node"  slot-scope="{ node, data }" >
         <span>{{node.label}}</span>
         <span v-if="edit">
-            <i class="el-icon-edit" @click="() => update(data)"></i>
+            <i class="el-icon-edit" @click="() => update(node,data)"></i>
           &nbsp;&nbsp;
             <i class="el-icon-plus" @click="() => append(data)"></i>
             &nbsp;&nbsp;
@@ -168,7 +168,6 @@
 
       remove (node, data) {
         const parent = node.parent
-        console.log(node)
         const children = parent.data.children || parent.data
         const index = children.findIndex(d => d.id === data.id)
         if (children.length === 1 && parent.parent === null) {
@@ -183,7 +182,9 @@
         this.nodeChange()
       },
 
-      update(data){
+      update(node,data){
+        const parent = node.parent
+        const children = parent.data.children || parent.data
         this.$prompt('请输入节点名称', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
@@ -191,16 +192,20 @@
             if (val.length < 1)
               return '节点名称不能为空'
             // 检测子节点是否存在该名称
-            let path = data.path + val + '/'
-            if (data.children.findIndex(node => {
+            let path = parent.data.path + val + '/'
+            if (children.findIndex(node => {
               return node.path === path}) >= 0) {
               return '该节点名称已存在'
             }
             return true
           }
-        }).then(({ value }) => {
-          data.label = value
-        })
+        }).then(
+          ({value}) => {
+            data.label = value
+            this.nodeChange()
+          }
+        )
+
       },
 
       nodeChange() {
