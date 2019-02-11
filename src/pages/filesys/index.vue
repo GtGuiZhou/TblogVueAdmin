@@ -6,25 +6,39 @@
                 <el-breadcrumb-item>首页</el-breadcrumb-item>
             </el-breadcrumb>
         </template>
-        <div style="text-align: center">
-            <el-upload
-                    drag
-                    :action="$uploadFileUrl"
-                    multiple>
-                <i class="el-icon-upload"></i>
-                <div class="el-upload__text">
-                    将文件拖到此处，或<em>点击上传</em>
-                    <div class="el-upload__tip" slot="tip">不超过20M</div>
-                </div>
-            </el-upload>
-        </div>
-        <el-pagination-plus :page="page"></el-pagination-plus>
+        <el-pagination-plus
+                @change="loadItems"
+                :page="page">
+            <el-button type="primary" size="small" @click="dialogUpload = true">上传文件</el-button>
+        </el-pagination-plus>
         <d2-crud
                 :rowHandle="rowHandle"
                 @row-remove="handleRowRemove"
                 :columns="columns"
                 :data="data"
                 />
+
+        <el-dialog
+                title="上传文件"
+                :visible.sync="dialogUpload"
+                >
+            <div style="text-align: center">
+                <el-upload
+                        drag
+                        :action="$uploadFileUrl"
+                        multiple>
+                    <i class="el-icon-upload"></i>
+                    <div class="el-upload__text">
+                        将文件拖到此处，或<em>点击上传</em>
+                        <div class="el-upload__tip" slot="tip">不超过20M</div>
+                    </div>
+                </el-upload>
+            </div>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
+              </span>
+        </el-dialog>
+
     </d2-container>
 </template>
 
@@ -50,6 +64,7 @@
           total: 0,
           size: 10
         },
+        dialogUpload: false,
         rowHandle: {
           remove: {
             icon: 'el-icon-delete',
@@ -64,11 +79,12 @@
       }
     },
     created () {
-     this.loadItems()
+     this.loadItems(this.page)
     },
     methods: {
-      loadItems() {
-        UploadIndex(this.page).then(
+      loadItems(page) {
+        console.log(page)
+        UploadIndex(page).then(
           res => {
             this.data = res.list
             this.page = res.page

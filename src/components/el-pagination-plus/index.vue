@@ -40,10 +40,10 @@
     },
     methods: {
       handleSizeChange (size) {
-        this.$emit('change',this.page.index,size)
+        this.$emit('change',{index:this.page.index,size:size})
       },
       handleCurrentChange (index) {
-        this.$emit('change',index,this.page.size)
+        this.$emit('change',{index:index,size:this.page.size})
       }
     }
   }
