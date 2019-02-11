@@ -11,7 +11,7 @@
                     :total="page.total">
             </el-pagination>
             &nbsp;
-            <i class="el-icon-refresh refresh" @click="$emit('refresh')"></i>
+            <i class="el-icon-refresh refresh" @click="handleRefresh"></i>
         </div>
 
         <slot></slot>
@@ -44,6 +44,9 @@
       },
       handleCurrentChange (index) {
         this.$emit('change',{index:index,size:this.page.size})
+      },
+      handleRefresh(){
+        this.$emit('refresh',this.page)
       }
     }
   }

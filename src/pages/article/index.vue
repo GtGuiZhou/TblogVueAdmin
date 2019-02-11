@@ -9,7 +9,7 @@
         <el-pagination-plus
                 :page="page"
                 @refresh="loadItems"
-                @change="pageChange"
+                @change="loadItems"
         ></el-pagination-plus>
         <br>
 
@@ -59,7 +59,7 @@
       }
     },
     created () {
-        this.loadItems()
+        this.loadItems(this.page)
     },
     methods: {
       deleteItem(item,index){
@@ -70,14 +70,8 @@
           }
         )
       },
-      pageChange(index,size){
-        console.log(index)
-        this.page.index = index
-        this.page.size = size
-        this.loadItems()
-      },
-      loadItems () {
-        ArticleIndex(this.page).then(
+      loadItems (page) {
+        ArticleIndex(page).then(
           res => {
             this.items =  res.list
             this.page  =  res.page
