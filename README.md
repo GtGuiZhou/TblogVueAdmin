@@ -11,7 +11,7 @@
 | |-- 自定义标签
 |
 |-- 文件模块
-| |-- 上传文件（当前可上传：图片）
+| |-- 上传文件 (完成)
 | |-- 下载文件（完成50%）
 | |-- 文件管理
 | |-- 文件分组
@@ -167,4 +167,11 @@ cursor: pointer;``
           },   
     }
 <script>
+~~~
+## 解锁下载文件新姿势
+优点是很简单就能实现，缺点就是如果文件不存在就会跳到另外一个页面
+~~~
+    let a = document.createElement('a')
+        a.setAttribute('href',row.url + 'unOpeninBrowser')
+        a.click()
 ~~~

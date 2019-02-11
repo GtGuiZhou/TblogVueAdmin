@@ -66,7 +66,7 @@
     ArticleUpdateGroupTree
   } from '../../api/page.article'
   import ElTreePlus from '../../components/el-tree-plus/index'
-  import { UploadFile } from '../../api/sys.common'
+  import { FileSysUpload } from '../../api/page.filesys'
 
   export default {
     name: 'add',
@@ -109,7 +109,7 @@
       },
 
       onImageAdd (pos,file) {
-        UploadFile(file).then(
+        FileSysUpload(file).then(
           res => {
             this.$refs.markdown.$img2Url(pos, res.url);
             console.log(res)
