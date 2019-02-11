@@ -38,6 +38,14 @@ export default {
       default: true
     }
   },
+  watch: {
+    source (val) {
+      this.initWithMd(val)
+    },
+    url (val){
+      this.initWithUrl(val)
+    }
+  },
   data () {
     return {
       getReadmePublicPath: '',

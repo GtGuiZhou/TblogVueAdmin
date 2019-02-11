@@ -10,7 +10,7 @@
 
             <aplayer
                     v-if="data.length > 0"
-                    :music="data[0]"
+                    :music="curMusic"
                     :list="data"
                     listMaxHeight="200px"
             ></aplayer>
@@ -19,7 +19,7 @@
                     @row-add="add"
                     ref="crudMusic"
                     :rowHandle="rowHandle"
-                    @row-remove="onListUpdate"
+                    @row-remove="remove"
                     @play="onPlay"
                     :columns="columns"
                     :data="data"
@@ -33,8 +33,9 @@
 
 <script>
   import { MusicIndex, MusicUpdate } from '../../api/page.music'
-    import Aplayer from 'vue-aplayer'
+  import Aplayer from 'vue-aplayer'
   import ElPaginationPlus from '../../components/el-pagination-plus/index'
+
   export default {
     name: 'index',
     components: {
@@ -43,26 +44,29 @@
     },
     data () {
       return {
+        curMusic: null,
         addTemplate: {
           title: { title: '音乐名称', value: '' },
           artist: { title: '歌手', value: '' },
-          pic: { title: '封面', value: '',
-                component: {
-                  name: 'el-upload-avatar'
-                }
-            },
-          src: { title: '音乐文件', value: '',
-                component: {
-                  name: 'el-upload-file'
-                }
+          pic: {
+            title: '封面', value: '',
+            component: {
+              name: 'el-upload-avatar'
+            }
           },
+          src: {
+            title: '音乐文件', value: '',
+            component: {
+              name: 'el-upload-file'
+            }
+          }
         },
         data: [],
         columns: [
           { title: '音乐名称', key: 'title' },
           { title: '歌手', key: 'artist' },
-          { title: '封面', key: 'pic'},
-          { title: '音乐地址', key: 'src' },
+          { title: '封面', key: 'pic' },
+          { title: '音乐地址', key: 'src' }
         ],
         rowHandle: {
           remove: {
@@ -77,8 +81,8 @@
             {
               text: '播放',
               size: 'small',
-              icon:'el-icon-play',
-              type:'info',
+              icon: 'el-icon-play',
+              type: 'info',
               emit: 'play'
             }
           ]
@@ -86,10 +90,10 @@
       }
     },
     created () {
-        this.loadItems()
+      this.loadItems()
     },
     methods: {
-      add (row,done) {
+      add (row, done) {
         let temp = JSON.parse(JSON.stringify(this.data))
         temp.push(row)
         MusicUpdate(temp).then(
@@ -101,7 +105,7 @@
         )
       },
 
-      addRow(){
+      addRow () {
         this.$refs.crudMusic.showDialog({
           mode: 'add'
         })
@@ -113,20 +117,21 @@
       loadItems () {
         MusicIndex().then(
           res => {
+            if (res.value.length > 0) this.curMusic = res.value[0]
             this.data = res.value
           }
         )
       },
 
-      onPlay({index,row}){
+      onPlay ({ index, row }) {
 
       },
-      onListUpdate ({ index, row }, done) {
+      remove ({ index, row }, done) {
         let temp = JSON.parse(JSON.stringify(this.data))
-        temp.splice(index,1)
+        temp.splice(index, 1)
         MusicUpdate(temp).then(
           () => {
-            this.successNotify('修改成功')
+            this.successNotify('删除成功')
             this.data = temp
           }
         )

@@ -14,21 +14,11 @@
         <br>
 
         <div v-for="(item,key) in items" :key="key">
-            <el-card style="height: 250px">
+            <el-card >
                 <h2>{{item.title}}</h2>
-                <div style="display: flex;height: 100px">
-                    <img v-if="item.cover" :src="item.cover" width="150px" height="100px">
-                    &nbsp;
-                    &nbsp;
-                    <span v-html="item.content">
-                    </span>
-                </div>
+                <d2-markdown :source="item.content"></d2-markdown>
                 <div style="display: flex;justify-content: space-between">
                     <div>
-                        <gray-small>创建时间{{item.create_time}}</gray-small>
-                        <br>
-                        <gray-small>更新时间{{item.update_time}}</gray-small>
-                        <br>
                         <gray-small>删除时间{{item.delete_time}}</gray-small>
                     </div>
                     <div>
