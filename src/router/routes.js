@@ -1,6 +1,7 @@
 import demo from './modules/demo'
 import article from './modules/article'
 import filesys from './modules/filesys'
+import music from './modules/music'
 
 import layoutHeaderAside from '@/layout/header-aside'
 
@@ -50,7 +51,8 @@ const frameIn = [
   },
   demo,
   article,
-  filesys
+  filesys,
+  music
 ]
 
 /**

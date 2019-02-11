@@ -2,7 +2,7 @@
     <d2-container>
         <template slot="header">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ path: '/article' }">文件管理</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ path: '/filesys' }">文件管理</el-breadcrumb-item>
                 <el-breadcrumb-item>首页</el-breadcrumb-item>
             </el-breadcrumb>
         </template>

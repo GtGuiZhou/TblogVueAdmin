@@ -18,6 +18,11 @@ export default [
     ]
   },
   {
+    title: '音乐管理',
+    icon: 'folder-o',
+    path:'/music'
+  },
+  {
     title: '演示页面',
     icon: 'folder-o',
     children: [
