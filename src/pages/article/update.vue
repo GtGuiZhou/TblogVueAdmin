@@ -17,21 +17,6 @@
                         clearable>
                 </el-input>
             </el-form-item>
-            <el-form-item
-                    prop="cover"
-                    label="封面">
-                <el-upload
-                        v-loading="imageLoading"
-                        name="file"
-                        class="Cover-uploader"
-                        :action="$uploadImageUrl"
-                        :show-file-list="false"
-                        :on-success="handleCoverSuccess"
-                        :before-upload="beforeCoverUpload">
-                    <img v-if="form.cover" :src="form.cover" class="Cover">
-                    <i v-else class="el-icon-plus Cover-uploader-icon"></i>
-                </el-upload>
-            </el-form-item>
 
             <el-form-item
                     prop="group_path"
@@ -50,14 +35,12 @@
                     prop="content"
                     label="内容">
                 <!--style="line-height: normal"-->
-                <div>
-                    <quill-editor
-                            style="left: 0;top: 0"
-                            v-model="form.content"
-                            ref="myQuillEditor"
-                            :options="editorOption">
-                    </quill-editor>
-                </div>
+                <mavon-editor
+                        ref="markdown"
+                        :ishljs = "true"
+                        code-style="arduino-light"
+                        @imgAdd="onImageAdd"
+                        v-model="form.content"/>
             </el-form-item>
 
 
@@ -83,6 +66,7 @@
     ArticleUpdateGroupTree
   } from '../../api/page.article'
   import ElTreePlus from '../../components/el-tree-plus/index'
+  import { UploadFile } from '../../api/sys.common'
 
   export default {
     name: 'add',
@@ -94,7 +78,6 @@
       return {
         form: {
           title: '',
-          cover: '',
           content: '',
           group_path: ''
         },
@@ -125,6 +108,15 @@
         )
       },
 
+      onImageAdd (pos,file) {
+        UploadFile(file).then(
+          res => {
+            this.$refs.markdown.$img2Url(pos, res.url);
+            console.log(res)
+          }
+        )
+      },
+
       update () {
         ArticleUpdate(this.$route.params.id,this.form).then(
           () => {
@@ -141,20 +133,6 @@
         }).then(() => {
             this.$router.push('/article/view/' + id)
         })
-      },
-
-      handleCoverSuccess (res, file) {
-        this.imageLoading = false
-        console.log(res)
-        if (res.code === 0) {
-          this.successNotify('上传成功')
-          this.form.cover = res.data.url
-        } else {
-          this.errorNotify(res.msg)
-        }
-      },
-      beforeCoverUpload (file) {
-        this.imageLoading = true
       }
     }
   }

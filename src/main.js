@@ -15,10 +15,12 @@ import menuAside from '@/menu/aside'
 import { frameInRoutes } from '@/router/routes'
 
 // [ 可选插件组件 ] UEditor
-import VueUeditorWrap from 'vue-ueditor-wrap'
 import elementnotify from './components/mixins/element.notify.js'
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor)
 
-Vue.component('VueUeditorWrap', VueUeditorWrap)
 
 Vue.prototype.$uploadImageUrl = process.env.VUE_APP_UPLOAD_IMAGE_URL
 

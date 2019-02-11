@@ -8,8 +8,9 @@
                 </el-breadcrumb>
             </template>
             <h2>{{article.title}}</h2>
-            <img class="image" :src="article.cover"/>
-            <div v-html="article.content"></div>
+            <div style="background-color: white;padding: 10px;min-height: 600px">
+                <d2-markdown :source="article.content" :highlight="true"></d2-markdown>
+            </div>
         </d2-container>
     </div>
 </template>
@@ -22,6 +23,7 @@
     data () {
       return {
         article: {
+          title: '',
           content: ''
         }
       }
