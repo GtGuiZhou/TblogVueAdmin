@@ -1,16 +1,20 @@
 <template>
-    <div style="display: flex;align-items: center">
-        <el-pagination
-                @size-change="handleSizeChange"
-                @current-change="handleCurrentChange"
-                :current-page="page.index"
-                :page-sizes="[10,100, 200, 300, 400]"
-                :page-size="page.size"
-                layout="total, sizes, prev, pager, next, jumper"
-                :total="page.total">
-        </el-pagination>
-        &nbsp;
-        <i class="el-icon-refresh refresh" @click="$emit('refresh')"></i>
+    <div style="display: flex;justify-content: space-between">
+        <div style="display: flex;align-items: center;">
+            <el-pagination
+                    @size-change="handleSizeChange"
+                    @current-change="handleCurrentChange"
+                    :current-page="page.index"
+                    :page-sizes="[10,100, 200, 300, 400]"
+                    :page-size="page.size"
+                    layout="total, sizes, prev, pager, next, jumper"
+                    :total="page.total">
+            </el-pagination>
+            &nbsp;
+            <i class="el-icon-refresh refresh" @click="$emit('refresh')"></i>
+        </div>
+
+        <slot></slot>
     </div>
 </template>
 
