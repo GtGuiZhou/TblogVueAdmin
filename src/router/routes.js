@@ -1,5 +1,6 @@
 import demo from './modules/demo'
 import article from './modules/article'
+import filesys from './modules/filesys'
 
 import layoutHeaderAside from '@/layout/header-aside'
 
@@ -48,7 +49,8 @@ const frameIn = [
     ]
   },
   demo,
-  article
+  article,
+  filesys
 ]
 
 /**

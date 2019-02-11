@@ -11,6 +11,13 @@ export default [
     ]
   },
   {
+    title: '文件管理',
+    icon: 'folder-o',
+    children: [
+      { path: '/filesys', title: '首页' }
+    ]
+  },
+  {
     title: '演示页面',
     icon: 'folder-o',
     children: [

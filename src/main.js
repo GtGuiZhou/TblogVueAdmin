@@ -18,11 +18,14 @@ import { frameInRoutes } from '@/router/routes'
 import elementnotify from './components/mixins/element.notify.js'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import D2Crud from '@d2-projects/d2-crud'
 // use
 Vue.use(mavonEditor)
+Vue.use(D2Crud)
 
 
-Vue.prototype.$uploadImageUrl = process.env.VUE_APP_UPLOAD_IMAGE_URL
+
+Vue.prototype.$uploadFileUrl = process.env.VUE_APP_UPLOAD_FILE_URL
 
 Vue.mixin(elementnotify)
 // 核心插件
