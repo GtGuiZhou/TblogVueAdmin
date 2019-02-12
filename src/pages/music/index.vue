@@ -9,6 +9,7 @@
             </template>
 
             <aplayer
+                    ref="AplayerMusic"
                     v-if="data.length > 0"
                     :music="curMusic"
                     :list="data"
@@ -124,7 +125,11 @@
       },
 
       onPlay ({ index, row }) {
-
+        // console.log(1)
+        this.curMusic = row
+        this.$nextTick(function () {
+          this.$refs.AplayerMusic.play()
+        })
       },
       remove ({ index, row }, done) {
         let temp = JSON.parse(JSON.stringify(this.data))
