@@ -38,17 +38,7 @@ export function ArticleDelete (id) {
   })
 }
 
-/**
- * 真正删除
- * @param id
- * @constructor
- */
-export function ArticleRealDelete (id) {
-  return request({
-    url: '/article/realDelete/' + id,
-    method: 'delete'
-  })
-}
+
 
 export function ArticleUpdate (id,data) {
   return request({

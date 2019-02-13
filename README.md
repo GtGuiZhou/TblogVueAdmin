@@ -175,3 +175,14 @@ cursor: pointer;``
         a.setAttribute('href',row.url + 'unOpeninBrowser')
         a.click()
 ~~~
+## Aplayer音乐播放出现的小问题
+~~~
+// 错误姿势
+this.curMusic = row
+this.$refs.AplayerMusic.play()
+// 正确姿势
+this.curMusic = row
+this.$nextTick(function () {
+  this.$refs.AplayerMusic.play()
+})
+~~~

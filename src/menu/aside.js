@@ -18,6 +18,14 @@ export default [
     ]
   },
   {
+    title: '重要信息',
+    icon: 'folder-o',
+    children: [
+      { path: '/important/index', title: '首页' },
+      { path: '/important/recover', title: '回收站' }
+    ]
+  },
+  {
     title: '音乐管理',
     icon: 'folder-o',
     path:'/music'
