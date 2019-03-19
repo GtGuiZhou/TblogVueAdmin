@@ -46,81 +46,81 @@
 </template>
 
 <script>
-  import { FileSysDelete, FileSysDownload, FileSysIndex } from '../../api/page.filesys'
-  import ElPaginationPlus from '../../components/el-pagination-plus/index'
+import { FileSysDelete, FileSysIndex } from '../../api/page.filesys'
+import ElPaginationPlus from '../../components/el-pagination-plus/index'
 
-  export default {
-    name: 'index',
-    components: { ElPaginationPlus },
-    data () {
-      return {
-        data: [],
-        columns: [
-          { title: 'id', key: 'id' },
-          { title: '文件名称', key: 'filename' },
-          { title: '访问地址', key: 'url' },
-          { title: '存储设备', key: 'device' },
-          { title: '文件类型', key: 'mime' },
-          { title: '上传时间', key: 'create_time' },
-        ],
-        page: {
-          index: 1,
-          total: 0,
-          size: 10
+export default {
+  name: 'index',
+  components: { ElPaginationPlus },
+  data () {
+    return {
+      data: [],
+      columns: [
+        { title: 'id', key: 'id' },
+        { title: '文件名称', key: 'filename' },
+        { title: '访问地址', key: 'url' },
+        { title: '存储设备', key: 'device' },
+        { title: '文件类型', key: 'mime' },
+        { title: '上传时间', key: 'create_time' }
+      ],
+      page: {
+        index: 1,
+        total: 0,
+        size: 10
+      },
+      dialogUpload: false,
+      rowHandle: {
+        remove: {
+          icon: 'el-icon-delete',
+          size: 'small',
+          confirm: true,
+          show (index, row) {
+            return true
+          }
         },
-        dialogUpload: false,
-        rowHandle: {
-          remove: {
-            icon: 'el-icon-delete',
+        custom: [
+          {
+            text: '下载',
             size: 'small',
-            confirm: true,
-            show (index, row) {
-              return true
-            }
-          },
-          custom: [
-            {
-                text: '下载',
-                size: 'small',
-                icon:'el-icon-download',
-                type:'info',
-                emit: 'download'
-            }
-          ]
-        }
-      }
-    },
-    created () {
-     this.loadItems(this.page)
-    },
-    methods: {
-      loadItems(page) {
-        console.log(page)
-        FileSysIndex(page).then(
-          res => {
-            this.data = res.list
-            this.page = res.page
+            icon: 'el-icon-download',
+            type: 'info',
+            emit: 'download'
           }
-        )
-      },
-      onUploadSuccess(response, file, fileList){
-        this.loadItems(this.page)
-      },
-      onDownload({index,row}){
-        let a = document.createElement('a')
-        a.setAttribute('href',row.url + 'unOpeninBrowser')
-        a.click()
-      },
-      handleRowRemove ({ index, row }, done) {
-        FileSysDelete(row.id).then(
-          () => {
-            this.data.splice(index,1)
-            this.successNotify('删除成功')
-          }
-        )
+        ]
       }
     }
+  },
+  created () {
+    this.loadItems(this.page)
+  },
+  methods: {
+    loadItems (page) {
+      console.log(page)
+      FileSysIndex(page).then(
+        res => {
+          this.data = res.list
+          this.page = res.page
+        }
+      )
+    },
+    onUploadSuccess (response, file, fileList) {
+      this.loadItems(this.page)
+    },
+    onDownload ({ index, row }) {
+      let a = document.createElement('a')
+      a.setAttribute('href', row.url + 'unOpeninBrowser')
+      a.click()
+    },
+    handleRowRemove ({ index, row }, done) {
+      FileSysDelete(row.id).then(
+        () => {
+          this.data.splice(index, 1)
+          this.successNotify('删除成功')
+        }
+      )
+    }
   }
+}
 </script>
 
 <style scoped>

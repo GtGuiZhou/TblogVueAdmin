@@ -1,16 +1,18 @@
 <template>
         <el-upload
                 ref="ElUploadAvatar"
+                action="null"
                 class="avatar-uploader"
-                :action="$uploadFileUrl"
-                :show-file-list="false"
-                :on-success="handleAvatarSuccess">
+                :http-request="upload"
+                :show-file-list="false">
             <img v-if="value" :src="value" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
 </template>
 
 <script>
+  import { FileSysUpload } from '../../api/page.filesys'
+
   export default {
     name: 'ElUploadAvatar',
     props: {
@@ -24,14 +26,13 @@
       }
     },
     methods: {
-      handleAvatarSuccess (res, file, fileList) {
-        if (res.code === 0){
-          this.$emit('input',res.data.url)
-          this.successNotify('上传图片成功')
-        } else {
-          this.$refs.ElUploadAvatar.clearFiles()
-          this.errorNotify(res.msg)
-        }
+      upload(file){
+        console.log(file)
+        FileSysUpload(file.file).then(
+          res => {
+            this.$emit('input',res.url)
+          }
+        )
       }
     }
   }

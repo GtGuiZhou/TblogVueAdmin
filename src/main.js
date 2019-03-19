@@ -23,8 +23,6 @@ import D2Crud from '@d2-projects/d2-crud'
 Vue.use(mavonEditor)
 Vue.use(D2Crud)
 
-
-
 Vue.prototype.$uploadFileUrl = process.env.VUE_APP_UPLOAD_FILE_URL
 
 Vue.mixin(elementnotify)

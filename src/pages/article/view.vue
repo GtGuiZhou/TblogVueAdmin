@@ -16,26 +16,26 @@
 </template>
 
 <script>
-  import { ArticleRead } from '../../api/page.article'
+import { ArticleRead } from '../../api/page.article'
 
-  export default {
-    name: 'ArticleView',
-    data () {
-      return {
-        article: {
-          title: '',
-          content: ''
-        }
+export default {
+  name: 'ArticleView',
+  data () {
+    return {
+      article: {
+        title: '',
+        content: ''
       }
-    },
-    created () {
-      ArticleRead(this.$route.params.id).then(
-        res => {
-          this.article = res
-        }
-      )
     }
+  },
+  created () {
+    ArticleRead(this.$route.params.id).then(
+      res => {
+        this.article = res
+      }
+    )
   }
+}
 </script>
 
 <style scoped>

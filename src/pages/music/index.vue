@@ -33,116 +33,118 @@
 </template>
 
 <script>
-  import { MusicIndex, MusicUpdate } from '../../api/page.music'
-  import Aplayer from 'vue-aplayer'
-  import ElPaginationPlus from '../../components/el-pagination-plus/index'
+import { MusicIndex, MusicUpdate } from '../../api/page.music'
+import Aplayer from 'vue-aplayer'
+import ElPaginationPlus from '../../components/el-pagination-plus/index'
 
-  export default {
-    name: 'index',
-    components: {
-      ElPaginationPlus,
-      Aplayer
-    },
-    data () {
-      return {
-        curMusic: null,
-        addTemplate: {
-          title: { title: '音乐名称', value: '' },
-          artist: { title: '歌手', value: '' },
-          pic: {
-            title: '封面', value: '',
-            component: {
-              name: 'el-upload-avatar'
-            }
-          },
-          src: {
-            title: '音乐文件', value: '',
-            component: {
-              name: 'el-upload-file'
-            }
+export default {
+  name: 'index',
+  components: {
+    ElPaginationPlus,
+    Aplayer
+  },
+  data () {
+    return {
+      curMusic: null,
+      addTemplate: {
+        title: { title: '音乐名称', value: '' },
+        artist: { title: '歌手', value: '' },
+        pic: {
+          title: '封面',
+          value: '',
+          component: {
+            name: 'el-upload-avatar'
           }
         },
-        data: [],
-        columns: [
-          { title: '音乐名称', key: 'title' },
-          { title: '歌手', key: 'artist' },
-          { title: '封面', key: 'pic' },
-          { title: '音乐地址', key: 'src' }
-        ],
-        rowHandle: {
-          remove: {
-            icon: 'el-icon-delete',
-            size: 'small',
-            confirm: true,
-            show (index, row) {
-              return true
-            }
-          },
-          custom: [
-            {
-              text: '播放',
-              size: 'small',
-              icon: 'el-icon-play',
-              type: 'info',
-              emit: 'play'
-            }
-          ]
+        src: {
+          title: '音乐文件',
+          value: '',
+          component: {
+            name: 'el-upload-file'
+          }
         }
-      }
-    },
-    created () {
-      this.loadItems()
-    },
-    methods: {
-      add (row, done) {
-        let temp = JSON.parse(JSON.stringify(this.data))
-        temp.push(row)
-        MusicUpdate(temp).then(
-          () => {
-            this.successNotify('修改成功')
-            this.data = temp
-            done()
+      },
+      data: [],
+      columns: [
+        { title: '音乐名称', key: 'title' },
+        { title: '歌手', key: 'artist' },
+        { title: '封面', key: 'pic' },
+        { title: '音乐地址', key: 'src' }
+      ],
+      rowHandle: {
+        remove: {
+          icon: 'el-icon-delete',
+          size: 'small',
+          confirm: true,
+          show (index, row) {
+            return true
           }
-        )
-      },
-
-      addRow () {
-        this.$refs.crudMusic.showDialog({
-          mode: 'add'
-        })
-      },
-
-      onUploadSuccess () {
-      },
-
-      loadItems () {
-        MusicIndex().then(
-          res => {
-            if (res.value.length > 0) this.curMusic = res.value[0]
-            this.data = res.value
+        },
+        custom: [
+          {
+            text: '播放',
+            size: 'small',
+            icon: 'el-icon-play',
+            type: 'info',
+            emit: 'play'
           }
-        )
-      },
-
-      onPlay ({ index, row }) {
-        // console.log(1)
-        this.curMusic = row
-        this.$nextTick(function () {
-          this.$refs.AplayerMusic.play()
-        })
-      },
-      remove ({ index, row }, done) {
-        let temp = JSON.parse(JSON.stringify(this.data))
-        temp.splice(index, 1)
-        MusicUpdate(temp).then(
-          () => {
-            this.successNotify('删除成功')
-            this.data = temp
-          }
-        )
+        ]
       }
     }
+  },
+  created () {
+    this.loadItems()
+  },
+  methods: {
+    add (row, done) {
+      let temp = JSON.parse(JSON.stringify(this.data))
+      temp.push(row)
+      MusicUpdate(temp).then(
+        () => {
+          this.successNotify('修改成功')
+          this.data = temp
+          done()
+        }
+      )
+    },
+
+    addRow () {
+      this.$refs.crudMusic.showDialog({
+        mode: 'add'
+      })
+    },
+
+    onUploadSuccess () {
+    },
+
+    loadItems () {
+      MusicIndex().then(
+        res => {
+          if (res.value.length > 0) this.curMusic = res.value[0]
+          this.data = res.value
+        }
+      )
+    },
+
+    onPlay ({ index, row }) {
+      // console.log(1)
+      this.curMusic = row
+      this.$nextTick(function () {
+        this.$refs.AplayerMusic.play()
+      })
+    },
+    remove ({ index, row }, done) {
+      let temp = JSON.parse(JSON.stringify(this.data))
+      temp.splice(index, 1)
+      MusicUpdate(temp).then(
+        () => {
+          this.successNotify('删除成功')
+          this.data = temp
+        }
+      )
+    }
   }
+}
 </script>
 
 <style scoped>

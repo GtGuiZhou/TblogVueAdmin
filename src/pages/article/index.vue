@@ -40,46 +40,46 @@
 </template>
 
 <script>
-  import { ArticleDelete, ArticleIndex } from '../../api/page.article'
-  import ElPaginationPlus from '../../components/el-pagination-plus/index'
-  import GraySmall from '../../components/gray-small/index'
-  export default {
-    name: 'Index',
-    components: { GraySmall, ElPaginationPlus },
-    data () {
-      return {
-        loading: false,
-        items: [],
-        scrollTop: 0,
-        page: {
-          index: 1,
-          total: 0,
-          size: 10
-        }
-      }
-    },
-    created () {
-        this.loadItems(this.page)
-    },
-    methods: {
-      deleteItem(item,index){
-        ArticleDelete(item.id).then(
-          () => {
-            this.items.splice(index,1)
-            this.successNotify('删除'+item.title+'成功,您可以在回收站看到')
-          }
-        )
-      },
-      loadItems (page) {
-        ArticleIndex(page).then(
-          res => {
-            this.items =  res.list
-            this.page  =  res.page
-          }
-        )
+import { ArticleDelete, ArticleIndex } from '../../api/page.article'
+import ElPaginationPlus from '../../components/el-pagination-plus/index'
+import GraySmall from '../../components/gray-small/index'
+export default {
+  name: 'Index',
+  components: { GraySmall, ElPaginationPlus },
+  data () {
+    return {
+      loading: false,
+      items: [],
+      scrollTop: 0,
+      page: {
+        index: 1,
+        total: 0,
+        size: 10
       }
     }
+  },
+  created () {
+    this.loadItems(this.page)
+  },
+  methods: {
+    deleteItem (item, index) {
+      ArticleDelete(item.id).then(
+        () => {
+          this.items.splice(index, 1)
+          this.successNotify('删除' + item.title + '成功,您可以在回收站看到')
+        }
+      )
+    },
+    loadItems (page) {
+      ArticleIndex(page).then(
+        res => {
+          this.items = res.list
+          this.page = res.page
+        }
+      )
+    }
   }
+}
 </script>
 
 <style scoped>

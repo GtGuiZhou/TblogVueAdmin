@@ -8,6 +8,7 @@ module.exports = {
     '@vue/standard'
   ],
   rules: {
+    'indent': 'off',
     'no-console': 'off',
     'no-debugger': 'off'
   },

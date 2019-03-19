@@ -66,85 +66,84 @@
 </template>
 
 <script>
-  import { ImportantAdd, ImportantIndex, ImportantRemove, ImportantUnLock } from '../../api/page.important'
-  import ElPaginationPlus from '../../components/el-pagination-plus/index'
+import { ImportantAdd, ImportantIndex, ImportantRemove, ImportantUnLock } from '../../api/page.important'
+import ElPaginationPlus from '../../components/el-pagination-plus/index'
 
-  export default {
-    name: 'Important',
-    components: { ElPaginationPlus },
-    data () {
-      return {
-        dialogVisible: false,
-        items: [],
-        page: {
-          index: 1,
-          total: 0,
-          size: 10
-        },
-        form: {
-          title: '',
-          content: '',
-          secret_key: ''
-        },
-        secret_key_confirm: ''
-      }
+export default {
+  name: 'Important',
+  components: { ElPaginationPlus },
+  data () {
+    return {
+      dialogVisible: false,
+      items: [],
+      page: {
+        index: 1,
+        total: 0,
+        size: 10
+      },
+      form: {
+        title: '',
+        content: '',
+        secret_key: ''
+      },
+      secret_key_confirm: ''
+    }
+  },
+  created () {
+    this.loadItems(this.page)
+  },
+  computed: {
+    checkSecretKey () {
+      return this.form.secret_key === this.secret_key_confirm
+    }
+  },
+  methods: {
+    loadItems (page) {
+      ImportantIndex(page).then(
+        res => {
+          this.items = res.list
+          this.page = res.page
+        }
+      )
     },
-    created () {
-      this.loadItems(this.page)
+
+    add () {
+      if (!this.checkSecretKey) return
+      ImportantAdd(this.form).then(
+        () => {
+          this.successNotify('添加成功')
+          this.loadItems(this.page)
+          this.dialogVisible = false
+        }
+      )
     },
-    computed : {
-      checkSecretKey () {
-        return this.form.secret_key === this.secret_key_confirm
-      }
+
+    remove (item, index) {
+      ImportantRemove(item.id).then(
+        () => {
+          this.items.splice(index, 1)
+          this.successNotify('删除成功')
+        }
+      )
     },
-    methods: {
-      loadItems(page) {
-        ImportantIndex(page).then(
+
+    unLock (item, index) {
+      this.$prompt('请输入密匙', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /.+/,
+        inputErrorMessage: '密匙不能为空'
+      }).then(({ value }) => {
+        ImportantUnLock(item.id, value).then(
           res => {
-            this.items = res.list
-            this.page = res.page
+            this.items[index].content = res.content
+            this.successNotify('解锁成功')
           }
         )
-      },
-
-      add () {
-        if (!this.checkSecretKey) return
-        ImportantAdd(this.form).then(
-          () => {
-            this.successNotify('添加成功')
-            this.loadItems(this.page)
-            this.dialogVisible = false
-          }
-        )
-      },
-
-      remove (item,index){
-        ImportantRemove(item.id).then(
-          () => {
-            this.items.splice(index,1)
-            this.successNotify('删除成功')
-          }
-        )
-      },
-
-      unLock(item,index){
-        this.$prompt('请输入密匙', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          inputPattern: /.+/,
-          inputErrorMessage: '密匙不能为空'
-        }).then(({ value }) => {
-          ImportantUnLock(item.id,value).then(
-            res => {
-              this.items[index].content = res.content
-              this.successNotify('解锁成功')
-            }
-          )
-        })
-
-      }
+      })
     }
   }
+}
 </script>
 
 <style scoped>

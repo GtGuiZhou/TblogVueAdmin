@@ -54,75 +54,74 @@
 </template>
 
 <script>
-  import { ArticleAdd, ArticleGetGroupTree, ArticleUpdateGroupTree } from '../../api/page.article'
-  import ElTreePlus from '../../components/el-tree-plus/index'
-  import { FileSysUpload } from '../../api/page.filesys'
+import { ArticleAdd, ArticleGetGroupTree, ArticleUpdateGroupTree } from '../../api/page.article'
+import ElTreePlus from '../../components/el-tree-plus/index'
+import { FileSysUpload } from '../../api/page.filesys'
 
+export default {
+  name: 'add',
+  components: {
+    ElTreePlus
+  },
 
-  export default {
-    name: 'add',
-    components: {
-      ElTreePlus
-    },
-
-    data () {
-      return {
-        form: {
-          title: '',
-          content: '',
-          group_path: '',
-          tags: ''
-        },
-        tags: [],
-        tree:[],
-        editorOption: {},
-        imageLoading: false
+  data () {
+    return {
+      form: {
+        title: '',
+        content: '',
+        group_path: '',
+        tags: ''
+      },
+      tags: [],
+      tree: [],
+      editorOption: {},
+      imageLoading: false
+    }
+  },
+  created () {
+    ArticleGetGroupTree().then(
+      res => {
+        this.tree = res
       }
-    },
-    created(){
-      ArticleGetGroupTree().then(
+    )
+  },
+  methods: {
+    add () {
+      ArticleAdd(this.form).then(
         res => {
-          this.tree = res
+          this.jumpConfirm(res.id)
         }
       )
     },
-    methods: {
-      add () {
-        ArticleAdd(this.form).then(
-          res => {
-            this.jumpConfirm(res.id)
-          }
-        )
-      },
 
-      onImageAdd (pos,file) {
-        FileSysUpload(file).then(
-          res => {
-            this.$refs.markdown.$img2Url(pos, res.url);
-            console.log(res)
-          }
-        )
-      },
+    onImageAdd (pos, file) {
+      FileSysUpload(file).then(
+        res => {
+          this.$refs.markdown.$img2Url(pos, res.url)
+          console.log(res)
+        }
+      )
+    },
 
-      handleNodeChange(tree){
-        ArticleUpdateGroupTree(tree).then(
-          () => {
-            this.successNotify('目录更新成功')
-          }
-        )
-      },
+    handleNodeChange (tree) {
+      ArticleUpdateGroupTree(tree).then(
+        () => {
+          this.successNotify('目录更新成功')
+        }
+      )
+    },
 
-      jumpConfirm(id){
-        this.$confirm('上传成功', '提示', {
-          confirmButtonText: '跳转查看',
-          cancelButtonText: '取消',
-          type: 'success'
-        }).then(() => {
-            this.$router.push('/article/view/' + id)
-        })
-      }
+    jumpConfirm (id) {
+      this.$confirm('上传成功', '提示', {
+        confirmButtonText: '跳转查看',
+        cancelButtonText: '取消',
+        type: 'success'
+      }).then(() => {
+        this.$router.push('/article/view/' + id)
+      })
     }
   }
+}
 </script>
 
 <style>

@@ -11,8 +11,9 @@ process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 let publicPath = './'
 
 module.exports = {
+  outputDir: '/www/wwwroot/TBlog/public/static/admin',
   publicPath, // 根据你的实际情况更改这里
-  lintOnSave: false,
+  lintOnSave: true,
   devServer: {
     // publicPath // 和 publicPath 保持一致
     proxy: {
@@ -22,6 +23,13 @@ module.exports = {
         changeOrigin: true,
         pathRewrite: {
           '^/admin': ''
+        }
+      },
+      '/api': {
+        target: 'http://www.tblog.cn/api',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': ''
         }
       }
     }
@@ -55,23 +63,23 @@ module.exports = {
         config => config.devtool('cheap-source-map')
       )
       // 非开发环境
-      .when(process.env.NODE_ENV !== 'development', config => {
-        config.optimization
-          .minimizer([
-            new UglifyJsPlugin({
-              uglifyOptions: {
-                // 移除 console
-                // 其它优化选项 https://segmentfault.com/a/1190000010874406
-                compress: {
-                  warnings: false,
-                  drop_console: true,
-                  drop_debugger: true,
-                  pure_funcs: ['console.log']
-                }
-              }
-            })
-          ])
-      })
+      // .when(process.env.NODE_ENV !== 'development', config => {
+      //   config.optimization
+      //     .minimizer([
+      //       new UglifyJsPlugin({
+      //         uglifyOptions: {
+      //           // 移除 console
+      //           // 其它优化选项 https://segmentfault.com/a/1190000010874406
+      //           compress: {
+      //             warnings: false,
+      //             drop_console: true,
+      //             drop_debugger: true,
+      //             pure_funcs: ['console.log']
+      //           }
+      //         }
+      //       })
+      //     ])
+      // })
     // markdown
     config.module
       .rule('md')

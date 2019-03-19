@@ -43,7 +43,6 @@
                         v-model="form.content"/>
             </el-form-item>
 
-
             <el-form-item>
                 <div style="text-align: left">
                     <el-button type="primary" @click="update()">更新文章</el-button>
@@ -55,82 +54,82 @@
 </template>
 
 <script>
-  import {
-    ArticleGetGroupTree,
-    ArticleRead,
-    ArticleUpdate,
-    ArticleUpdateGroupTree
-  } from '../../api/page.article'
-  import ElTreePlus from '../../components/el-tree-plus/index'
-  import { FileSysUpload } from '../../api/page.filesys'
+import {
+  ArticleGetGroupTree,
+  ArticleRead,
+  ArticleUpdate,
+  ArticleUpdateGroupTree
+} from '../../api/page.article'
+import ElTreePlus from '../../components/el-tree-plus/index'
+import { FileSysUpload } from '../../api/page.filesys'
 
-  export default {
-    name: 'add',
-    components: {
-      ElTreePlus
-    },
-    data () {
-      return {
-        form: {
-          title: '',
-          content: '',
-          group_path: ''
-        },
-        tree:[],
-        editorOption:{},
-        imageLoading: false
+export default {
+  name: 'add',
+  components: {
+    ElTreePlus
+  },
+  data () {
+    return {
+      form: {
+        title: '',
+        content: '',
+        group_path: ''
+      },
+      tree: [],
+      editorOption: {},
+      imageLoading: false
+    }
+  },
+  created () {
+    ArticleRead(this.$route.params.id).then(
+      res => {
+        this.form = res
       }
-    },
-    created(){
-      ArticleRead(this.$route.params.id).then(
-        res => {
-          this.form = res
+    )
+
+    ArticleGetGroupTree().then(
+      res => {
+        this.tree = res
+      }
+    )
+  },
+  methods: {
+    handleNodeChange (tree) {
+      ArticleUpdateGroupTree(tree).then(
+        () => {
+          this.successNotify('目录更新成功')
         }
       )
+    },
 
-      ArticleGetGroupTree().then(
+    onImageAdd (pos, file) {
+      FileSysUpload(file).then(
         res => {
-          this.tree = res
+          this.$refs.markdown.$img2Url(pos, res.url)
+          console.log(res)
         }
       )
     },
-    methods: {
-      handleNodeChange(tree){
-        ArticleUpdateGroupTree(tree).then(
-          () => {
-            this.successNotify('目录更新成功')
-          }
-        )
-      },
 
-      onImageAdd (pos,file) {
-        FileSysUpload(file).then(
-          res => {
-            this.$refs.markdown.$img2Url(pos, res.url);
-            console.log(res)
-          }
-        )
-      },
+    update () {
+      ArticleUpdate(this.$route.params.id, this.form).then(
+        () => {
+          this.jumpConfirm(this.$route.params.id)
+        }
+      )
+    },
 
-      update () {
-        ArticleUpdate(this.$route.params.id,this.form).then(
-          () => {
-            this.jumpConfirm(this.$route.params.id)
-          }
-        )
-      },
-
-      jumpConfirm(id){
-        this.$confirm('更新成功', '提示', {
-          confirmButtonText: '跳转查看',
-          cancelButtonText: '取消',
-          type: 'success'
-        }).then(() => {
-            this.$router.push('/article/view/' + id)
-        })
-      }
+    jumpConfirm (id) {
+      this.$confirm('更新成功', '提示', {
+        confirmButtonText: '跳转查看',
+        cancelButtonText: '取消',
+        type: 'success'
+      }).then(() => {
+        this.$router.push('/article/view/' + id)
+      })
     }
   }
+}
 </script>
 
 <style >

@@ -30,68 +30,68 @@
 </template>
 
 <script>
-  import { ImportantIndexOfTrashed, ImportantRealDelete, ImportantRecover } from '../../api/page.important'
-  import ElPaginationPlus from '../../components/el-pagination-plus/index'
+import { ImportantIndexOfTrashed, ImportantRealDelete, ImportantRecover } from '../../api/page.important'
+import ElPaginationPlus from '../../components/el-pagination-plus/index'
 
-  export default {
-    name: 'Important',
-    components: { ElPaginationPlus },
-    data () {
-      return {
-        dialogVisible: false,
-        items: [],
-        page: {
-          index: 1,
-          total: 0,
-          size: 10
-        },
-      }
-    },
-    created () {
-      this.loadItems(this.page)
-    },
-    computed : {
-      checkSecretKey () {
-        return this.form.secret_key === this.secret_key_confirm
-      }
-    },
-    methods: {
-      loadItems(page) {
-        ImportantIndexOfTrashed(page).then(
-          res => {
-            this.items = res.list
-            this.page = res.page
-          }
-        )
-      },
-
-      recover (item,index) {
-        ImportantRecover(item.id).then(
-          () => {
-            this.items.splice(index,1)
-            this.page.total--
-            this.successNotify('已恢复')
-          }
-        )
-      },
-
-      remove (item,index){
-        this.$confirm('移除后就再也无法恢复了哦', '警告', {
-          confirmButtonText: '确认',
-          cancelButtonText: '取消',
-          type: 'danger'
-        }).then(() => {
-          ImportantRealDelete(item.id).then(
-            () => {
-              this.items.splice(index,1)
-              this.page.total--
-              this.successNotify('删除成功')
-            }
-          )
-        })
+export default {
+  name: 'Important',
+  components: { ElPaginationPlus },
+  data () {
+    return {
+      dialogVisible: false,
+      items: [],
+      page: {
+        index: 1,
+        total: 0,
+        size: 10
       }
     }
+  },
+  created () {
+    this.loadItems(this.page)
+  },
+  computed: {
+    checkSecretKey () {
+      return this.form.secret_key === this.secret_key_confirm
+    }
+  },
+  methods: {
+    loadItems (page) {
+      ImportantIndexOfTrashed(page).then(
+        res => {
+          this.items = res.list
+          this.page = res.page
+        }
+      )
+    },
+
+    recover (item, index) {
+      ImportantRecover(item.id).then(
+        () => {
+          this.items.splice(index, 1)
+          this.page.total--
+          this.successNotify('已恢复')
+        }
+      )
+    },
+
+    remove (item, index) {
+      this.$confirm('移除后就再也无法恢复了哦', '警告', {
+        confirmButtonText: '确认',
+        cancelButtonText: '取消',
+        type: 'danger'
+      }).then(() => {
+        ImportantRealDelete(item.id).then(
+          () => {
+            this.items.splice(index, 1)
+            this.page.total--
+            this.successNotify('删除成功')
+          }
+        )
+      })
+    }
   }
+}
 </script>
 
 <style scoped>
