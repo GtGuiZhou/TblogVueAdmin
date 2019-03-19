@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 cnpm i
-npx vue-cli-service build --dist /www/wwwroot/TBlog/public/static
+npx vue-cli-service build
 # 这种方法也可以
-# ./node_modules/.bin/vue-cli-service build --dist /www/wwwroot/TBlog/public/static
+# ./node_modules/.bin/vue-cli-service

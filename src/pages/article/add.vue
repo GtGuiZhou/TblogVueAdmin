@@ -19,9 +19,16 @@
             </el-form-item>
 
             <el-form-item
-                    prop="group_path"
-                    label="分组"
+                    prop="tags"
+                    label="标签"
             >
+                <el-card>
+                    <el-tag
+                            class="tag"
+                            v-for="(tag,key) in tags" :key="key"
+                            :type="randTagType()">{{tag.label}}
+                    </el-tag>
+                </el-card>
                 <el-tree-plus
                         v-model="form.group_path"
                         :edit="true"
@@ -86,6 +93,11 @@ export default {
     )
   },
   methods: {
+    randTagType () {
+      let items = ['success', '', 'danger', 'warning', 'info']
+      return items[Math.floor(Math.random() * items.length)]
+    },
+
     add () {
       ArticleAdd(this.form).then(
         res => {
@@ -150,5 +162,9 @@ export default {
         width: 178px;
         height: 178px;
         display: block;
+    }
+
+    .tag {
+        margin: 2px;
     }
 </style>

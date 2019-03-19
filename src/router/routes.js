@@ -3,6 +3,7 @@ import article from './modules/article'
 import filesys from './modules/filesys'
 import music from './modules/music'
 import important from './modules/important'
+import sysconfig from './modules/sysconfig'
 
 import layoutHeaderAside from '@/layout/header-aside'
 
@@ -50,11 +51,11 @@ const frameIn = [
       }
     ]
   },
-  demo,
   article,
   filesys,
   music,
-  important
+  important,
+  sysconfig
 ]
 
 /**
