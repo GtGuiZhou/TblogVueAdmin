@@ -1,12 +1,15 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="app" v-loading="$store.state.common.loading">
+    <router-view v-if="!$store.state.common.loading"/>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  created() {
+    this.$store.dispatch('common/init')
+  }
 }
 </script>
 

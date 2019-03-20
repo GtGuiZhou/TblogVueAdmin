@@ -63,8 +63,8 @@ module.exports = {
         config => config.devtool('cheap-source-map')
       )
       // 非开发环境
-      // .when(process.env.NODE_ENV !== 'development', config => {
-      //   config.optimization
+      // .when(process.env.NODE_ENV !== 'development', common => {
+      //   common.optimization
       //     .minimizer([
       //       new UglifyJsPlugin({
       //         uglifyOptions: {

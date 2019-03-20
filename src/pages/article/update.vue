@@ -19,16 +19,25 @@
             </el-form-item>
 
             <el-form-item
-                    prop="group_path"
-                    label="分组"
+                    prop="tags"
+                    label="标签"
             >
-                    <el-tree-plus
-                            v-model="form.group_path"
-                            :edit="true"
-                            @node-change="handleNodeChange"
-                            style="max-width: 300px;border: 1px solid #d9d9d9;padding: 5px"
-                            :data="tree"
-                    ></el-tree-plus>
+                <el-select
+                        style="width: 100%"
+                        size="medium"
+                        v-model="form.tags"
+                        multiple
+                        filterable
+                        allow-create
+                        default-first-option
+                        placeholder="请选择文章标签">
+                    <el-option
+                            v-for="item in tags"
+                            :key="item"
+                            :label="item"
+                            :value="item">
+                    </el-option>
+                </el-select>
             </el-form-item>
 
             <el-form-item
@@ -73,8 +82,10 @@ export default {
       form: {
         title: '',
         content: '',
-        group_path: ''
+        group_path: '',
+        tags: []
       },
+      tags: [],
       tree: [],
       editorOption: {},
       imageLoading: false
@@ -87,11 +98,8 @@ export default {
       }
     )
 
-    ArticleGetGroupTree().then(
-      res => {
-        this.tree = res
-      }
-    )
+    this.tags = this.$store.state.common.config['article:tags'].value
+
   },
   methods: {
     handleNodeChange (tree) {

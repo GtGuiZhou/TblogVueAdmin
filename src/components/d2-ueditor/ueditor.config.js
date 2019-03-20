@@ -1,5 +1,5 @@
 export default {
-  serverUrl: 'ueditor-server-config.json',
+  serverUrl: 'ueditor-server-common.json',
   UEDITOR_HOME_URL: '/lib/UEditor/',
   // 编辑器不自动被内容撑高
   autoHeightEnabled: false,
