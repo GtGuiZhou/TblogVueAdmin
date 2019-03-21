@@ -11,7 +11,6 @@ process.env.VUE_APP_BUILD_TIME = require('dayjs')().format('YYYY-M-D HH:mm:ss')
 let publicPath = './'
 
 module.exports = {
-  outputDir: '/www/wwwroot/TBlog/public/static/admin',
   publicPath, // 根据你的实际情况更改这里
   lintOnSave: true,
   devServer: {
