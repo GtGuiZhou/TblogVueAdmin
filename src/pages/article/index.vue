@@ -6,6 +6,8 @@
                 <el-breadcrumb-item>列表</el-breadcrumb-item>
             </el-breadcrumb>
         </template>
+        <tags :tags="$store.state.common.config['article:tags'].value" :select="$route.params.tag"></tags>
+        <br>
         <el-pagination-plus
                 :page="page"
                 @refresh="loadItems"
@@ -43,9 +45,10 @@
 import { ArticleDelete, ArticleIndex } from '../../api/page.article'
 import ElPaginationPlus from '../../components/el-pagination-plus/index'
 import GraySmall from '../../components/gray-small/index'
+import Tags from './components/tags'
 export default {
   name: 'Index',
-  components: { GraySmall, ElPaginationPlus },
+  components: { Tags, GraySmall, ElPaginationPlus },
   data () {
     return {
       loading: false,

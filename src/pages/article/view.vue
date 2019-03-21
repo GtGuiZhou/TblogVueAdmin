@@ -8,6 +8,7 @@
                 </el-breadcrumb>
             </template>
             <h2>{{article.title}}</h2>
+            <tags :tags="article.tags"></tags>
             <div style="background-color: white;padding: 10px;min-height: 600px">
                 <d2-markdown :source="article.content" :highlight="true"></d2-markdown>
             </div>
@@ -17,14 +18,17 @@
 
 <script>
 import { ArticleRead } from '../../api/page.article'
+import Tags from './components/tags'
 
 export default {
   name: 'ArticleView',
+  components: {Tags},
   data () {
     return {
       article: {
         title: '',
-        content: ''
+        content: '',
+        tags: []
       }
     }
   },
