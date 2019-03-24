@@ -29,7 +29,10 @@ export default [
   {
     title: '音乐管理',
     icon: 'folder-o',
-    path:'/music'
+    children: [
+      { path: '/music/index', title: '首页' },
+      { path: '/music/recover', title: '回收站' }
+    ]
   },
   {
     title: '演示页面',

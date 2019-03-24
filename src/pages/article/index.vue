@@ -21,9 +21,9 @@
                 <d2-markdown :source="item.content"></d2-markdown>
                 <div style="display: flex;justify-content: space-between">
                     <div>
-                        <gray-small>创建时间{{item.create_time}}</gray-small>
+                        <gray-small>创建时间{{item.create_time_text}}</gray-small>
                         <br>
-                        <gray-small>更新时间{{item.update_time}}</gray-small>
+                        <gray-small>更新时间{{item.update_time_text}}</gray-small>
                     </div>
                     <div>
                         <el-tag type="warning">

@@ -1,6 +1,6 @@
 import request from '@/plugin/axios'
 
-let module = 'music'
+let module = 'example'
 
 /**
  * 新增数据

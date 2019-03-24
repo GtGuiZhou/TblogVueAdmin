@@ -15,7 +15,7 @@
     props: ['tags','select'],
     methods: {
       randTagType () {
-        let items = ['success', '', 'danger', 'warning', 'info']
+        let items = ['success', '','danger', 'warning', 'info']
         return items[Math.floor(Math.random() * items.length)]
       }
     }

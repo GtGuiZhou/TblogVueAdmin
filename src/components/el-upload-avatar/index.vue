@@ -5,7 +5,9 @@
                 class="avatar-uploader"
                 :http-request="upload"
                 :show-file-list="false">
-            <img v-if="value" :src="value" class="avatar">
+            <img
+                    v-loading="loading"
+                    v-if="value" :src="value" class="avatar">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
 </template>
@@ -23,14 +25,22 @@
     },
     data () {
       return {
+        filename: '',
+        loading: false,
       }
     },
     methods: {
       upload(file){
-        console.log(file)
+        this.loading = true
+        this.filename = file.file.name
         FileSysUpload(file.file).then(
           res => {
             this.$emit('input',res.url)
+            this.loading = false
+          }
+        ).catch(
+          () => {
+            this.loading = false
           }
         )
       }
