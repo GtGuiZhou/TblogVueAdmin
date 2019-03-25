@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <el-form :model="form" status-icon :rules="rules" ref="form" label-width="100px" >
+        <el-form
+                :model="form" status-icon :rules="rules" ref="form" label-width="100px" >
             <el-form-item label="音乐名称" prop="title">
                 <el-input  v-model="form.title" ></el-input>
             </el-form-item>
@@ -13,9 +13,8 @@
             <el-form-item label="音乐文件" prop="src">
                 <el-upload-file v-model="form.src"></el-upload-file>
             </el-form-item>
-            <slot name="footer"></slot>
+            <slot name="footer" v-bind="self"></slot>
         </el-form>
-    </div>
 </template>
 
 <script>
@@ -34,6 +33,16 @@
           pic: '',
           src: ''
         }
+      }
+    },
+    computed : {
+      self(){
+        return this
+      }
+    },
+    created () {
+      if ('id' in this.$route.params){
+        this.onRead(this.$route.params.id,this.form)
       }
     },
     methods: {

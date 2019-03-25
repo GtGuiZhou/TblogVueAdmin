@@ -31,16 +31,8 @@ export default [
     icon: 'folder-o',
     children: [
       { path: '/music/index', title: '首页' },
-      { path: '/music/recover', title: '回收站' }
-    ]
-  },
-  {
-    title: '演示页面',
-    icon: 'folder-o',
-    children: [
-      { path: '/demo/page1', title: '页面 1' },
-      { path: '/demo/page2', title: '页面 2' },
-      { path: '/demo/page3', title: '页面 3' }
+      { path: '/music/add', title: '新增' },
+      { path: '/music/recover', title: '回收站' },
     ]
   }
 ]

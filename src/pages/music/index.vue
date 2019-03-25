@@ -3,7 +3,6 @@
         <d2-container>
             <template slot="header">
                 <el-breadcrumb separator="/">
-                    <el-breadcrumb-item :to="{ path: '/music' }">音乐管理</el-breadcrumb-item>
                     <el-breadcrumb-item>首页</el-breadcrumb-item>
                 </el-breadcrumb>
             </template>

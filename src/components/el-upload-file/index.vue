@@ -1,10 +1,11 @@
 <template>
     <el-upload
             ref="ElUploadFile"
-            :limit="1"
             class="upload-demo"
+            :on-preview="handlePreview"
             :on-success="handleAvatarSuccess"
             :action="$uploadFileUrl"
+            :file-list="[{name: value,url : value}]"
             >
         <el-button size="small" type="primary">点击上传</el-button>
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -15,6 +16,7 @@
   export default {
     name: 'ElUploadFile',
     props: {
+
       value: {
         type: String,
         require: true
@@ -24,6 +26,9 @@
       return {}
     },
     methods: {
+      handlePreview(file) {
+        this.$refs.ElUploadFile.clearFiles()
+      },
       handleAvatarSuccess (res,file) {
         if (res.code === 0){
           this.$emit('input',res.data.url)

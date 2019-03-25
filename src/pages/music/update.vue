@@ -5,23 +5,25 @@
                 <el-breadcrumb-item>编辑</el-breadcrumb-item>
             </el-breadcrumb>
         </template>
-        <el-form  ref="form"></el-form>
+        <music-form ref="form">
+            <el-form-item slot="footer" slot-scope="self">
+                <el-button
+                        :loading="self.crudUpdateLoading"
+                        type="primary"
+                        @click="self.handleUpdate()">保存</el-button>
+            </el-form-item>
+        </music-form>
     </d2-container>
 </template>
 
 <script>
   import MusicForm from './components/music-form/index'
   import crud from './mixins/crud'
-  import MusicTable from './components/music-table/index'
+
   export default {
     name: 'update',
     mixins: [crud],
-    components: { MusicTable, MusicForm },
-    created () {
-      let form
-      this.onRead(this.$route.params.id,form)
-      console.log(form)
-    }
+    components: { MusicForm }
   }
 </script>
 

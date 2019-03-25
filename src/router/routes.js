@@ -1,4 +1,3 @@
-import demo from './modules/demo'
 import article from './modules/article'
 import filesys from './modules/filesys'
 import music from './modules/music'

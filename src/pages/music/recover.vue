@@ -2,7 +2,7 @@
     <d2-container>
         <template slot="header">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item>首页</el-breadcrumb-item>
+                <el-breadcrumb-item>回收站</el-breadcrumb-item>
             </el-breadcrumb>
         </template>
         <el-pagination-plus :page="page" @change="pg => page = pg" @refresh="handleRefresh" ></el-pagination-plus>
